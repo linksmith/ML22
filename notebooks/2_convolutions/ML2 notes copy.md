@@ -45,9 +45,9 @@ https://youtu.be/FmpDIaiMIeA?t=455
 
 **Pooling** Shrink the size of the image stack. It has no learnable parameters. You end up with a similar pattern, but smaller. Pooling also makes a feature a little bit less sensitive to position. It also prevents overfitting.
 
-* Max pooling, focus on the highest value
-* Avg pooling, smooth the pixels
-  * Handig: in de laatste stap als je van $ (32, 3,3,128) $ naar (32,5) wil - 5 features - kat, hond etc.
+* **MaxPool2d()**, take the highest value of the pool.
+* **AvgPool2d()**, smooth the pixels
+  * Handig: in de laatste stap als je van $ (32, 3, 3, 128) $ naar  $ (32, 5) $ wil - 5 features - kat, hond etc.
     * Je gaat van 4D naar 2D
 
 ![Screenshot 2023-04-28 at 15.25.53](/Users/jeremycs/Library/Application Support/typora-user-images/Screenshot 2023-04-28 at 15.25.53.png)
@@ -96,7 +96,11 @@ Keep the math from breaking by tweaking each of the values just a bit
 
 **AlexNet**
 
-**VGG** AlexNet met meer lagen en minder grote features
+Hebben we nagebouwd in de les.
+
+**VGG** 
+
+AlexNet met meer lagen en minder grote features
 
 **GoogleNet**
 
@@ -132,4 +136,104 @@ Belangrijk te trainen op twee sets:
 * Validatie set (10%) - Daarna wil je ook een Validatie set, om te trippel checken. Want er kan data gelekt zijn in het iteratief process tussen training en testing.
 
 Als je test set gaat afwijken van trainingsset, dan heb je het punt bereikt dat het model is gaan overzitten.
+
+## Loss functies
+
+Essentieel voor het uitleggen aan je model dat het fout zit.
+
+* **Mean Squared Error MSEloss()** Gemiddelde van een gekwadrateerde loss (voor elke vector). werkt goed voor regressies. $$ MSE = \frac{1}{n}\sum_{i=1}^n (Y_i - \hat{Y}_i)^2 $$
+
+* **LogSoftMax**() A softmax function scales all the values, such that the sum is 1. Take the log of this.
+
+* **Negetive Log Likelihood NLLLoss()** Hoe dichter bij de 0 hoe fouter het is. Extra punishment for being wrong.
+  $$
+  NLL = - log(\hat{y}[c])
+  $$
+
+* **CrossEntropyLoss()** Doet NLL + SoftMax
+
+* **Binary Cross Entropy Loss BCELoss()** goed voor multi-label classificaties (waar SoftMax - sum = 1 - niet werkt). Uses Sigmoid (everything between 0 en 1, without forcing the total to sum to 1)
+
+* **BCEWithLogitsLoss()** same as BCELoss but with values between 0 and 1.
+
+#### Wrapup
+
+Losses are very important: they tell your model what is "right" and "wrong" and determines what the model will learn!
+
+* For **regression** models, typically use a **MSE**
+
+- For **classification**, use **CrossEntropyLoss** (note: this might be implemented different in other libraries like Tensorflow!)
+
+- For **multiclass**, use **BinaryCrossEntropy**
+
+There are other, more complex losses for more complex usecases but these three will cover 80% of your needs.
+
+## Learning rate
+
+Uitkomst van de loss vermenigvuldig je met de learning rate. (Typisch 0.001).
+
+Je wil dat je learning rate progressief afneemt om steeds kleinere corrigeringen te maken.
+
+Patience, is de waarde die je gebruikt het afnemen van de learning rate in te stellen.
+
+## Multilabel
+
+Bij een multiclans oplossing, wil je geen SoftMax gebruiken: er kunnen meerere correcte oplossingen zijn. 
+
+Film: humor science fiction film bijvoorbeeld.
+
+
+
+$ NLL = - log(\hat{y}[c]) $
+
+## Experimenteren Model bouwen
+
+* Kiezen architectuur
+  * ResNet pretrained finetuned
+  * AlexNet hypertunen.
+* Hyperparameter keuzes
+  * Activation functies
+  * Belangrijkst is aantal units & aantal filters.
+  * Aantal lagen
+  * Verder ook nog:
+    * Kernel size
+    * Optimiser (Adam etc.)
+    * Batch size
+    * Learning rate
+    * Optimize
+
+## Huiswerk
+
+* 02_01 en 02_02
+* Boek: Hoofdstuk 5 LSTM
+
+
+
+| 1       |      |
+| ------- | ---- |
+| filters | 112  |
+| units1  | 64   |
+| units2  | 56   |
+|         |      |
+| filters | 112  |
+| units1  | 72   |
+| units2  | 56   |
+|         |      |
+| filters | 120  |
+| units1  | 112  |
+| units2  | 88   |
+| 2       |      |
+| filters | 120  |
+| units1  | 66   |
+| units2  | 88   |
+|         |      |
+|         | 114  |
+|         | 72   |
+|         | 52   |
+|         |      |
+|         |      |
+|         |      |
+|         |      |
+
+
 
