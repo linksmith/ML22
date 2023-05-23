@@ -202,6 +202,14 @@ $ NLL = - log(\hat{y}[c]) $
     * Learning rate
     * Optimize
 
+5% zoekruimte wil je sampelen.
+
+
+
+SGD: learning rate via 0.01
+
+Adam: 0.001 learning rate handig
+
 ## Huiswerk
 
 * 02_01 en 02_02
